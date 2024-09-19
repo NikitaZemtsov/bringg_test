@@ -1,0 +1,5 @@
+fastapi[standard]==0.112.0
+uvicorn[standart]
+requests
+pydantic-xml
+jinja2
