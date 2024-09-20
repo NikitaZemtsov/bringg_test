@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FedEx Tracking</title>
+    <script>
+        async function submitTrackingForm(event) {
+            event.preventDefault();
+
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+            const trackingNumber = formData.get('tracking_number');
+
+            const response = await fetch('/track', {
+                method: 'POST',
+                body: new URLSearchParams(formData),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            const result = await response.json();
+            displayTrackingInfo(result);
+        }
+
+        function displayTrackingInfo(data) {
+            const resultDiv = document.getElementById('tracking-result');
+            resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+    </script>
+</head>
+<body>
+    <h1>Track Your Package</h1>
+    <form onsubmit="submitTrackingForm(event)">
+        <label for="tracking_number">Enter FedEx Tracking Number:</label>
+        <input type="text" id="tracking_number" name="tracking_number" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- This is where the tracking info will be displayed -->
+    <div id="tracking-result" style="margin-top: 20px;"></div>
+</body>
+</html>
