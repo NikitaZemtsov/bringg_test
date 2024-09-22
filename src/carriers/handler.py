@@ -1,17 +1,10 @@
-from base_api import CarriersAPI
-
-from .fedex import FedExAPI
+from .carrier import Carrier
+from .fedex.fedex import fedex
 
 
 class CarrierHandler:
     def __init__(self, carriers):
-        self.carriers: dict[str, CarriersAPI] = carriers
-
-    def track(self, carrier_name: str, tracking_number: str):
-        track_data = None
-        if carrier := self.carriers.get(carrier_name):
-            track_data = carrier.track(track_number=tracking_number)
-        return track_data
+        self.carriers: dict[str, Carrier] = carriers
 
 
-carrier_handler = CarrierHandler(carriers={'fedex': FedExAPI})
+carrier_handler = CarrierHandler(carriers={fedex.name: fedex})

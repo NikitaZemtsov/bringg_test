@@ -1,3 +1,4 @@
+import enum
 import re
 
 from pydantic_xml import BaseXmlModel, attr, element
@@ -78,8 +79,13 @@ class TrackRequest(BaseXmlModel, tag='TrackRequest'):
     selection_details: SelectionDetails = element(tag='SelectionDetails', default_factory=SelectionDetails)
 
 
+class Severity(enum.StrEnum):
+    SUCCESS = 'SUCCESS'
+    ERROR = 'ERROR'
+
+
 class Notifications(BaseXmlModel):
-    severity: str = element(tag='Severity')
+    severity: Severity = element(tag='Severity')
     source: str = element(tag='Source')
     code: int = element(tag='Code')
     message: str | None = element(tag='Message', default=None)
@@ -99,9 +105,13 @@ class AncillaryDetails(BaseXmlModel, tag='AncillaryDetails'):
     reason_description: str = element(tag='ReasonDescription')
 
 
+class DeliveryCode(enum.StrEnum):
+    DELIVERED = 'DL'
+
+
 class StatusDetail(BaseXmlModel):
     creation_time: str | None = element(tag='CreationTime', default=None)
-    code: str | None = element(tag='Code', default=None)
+    code: DeliveryCode | None = element(tag='Code', default=None)
     description: str | None = element(tag='Description', default=None)
     location: Location = element(tag='Location')
     ancillary_details: AncillaryDetails | None = element(tag='AncillaryDetails', default=None)
@@ -240,7 +250,7 @@ class TrackDetails(BaseXmlModel, search_mode='unordered'):
 
 
 class CompletedTrackDetails(BaseXmlModel):
-    highest_severity: str = element(tag='HighestSeverity')
+    highest_severity: Severity = element(tag='HighestSeverity')
     notifications: Notifications = element(tag='Notifications')
     duplicate_waybill: bool = element(tag='DuplicateWaybill')
     more_data: bool = element(tag='MoreData')
@@ -249,7 +259,7 @@ class CompletedTrackDetails(BaseXmlModel):
 
 
 class TrackReply(BaseXmlModel, tag='TrackReply'):
-    highest_severity: str = element(tag='HighestSeverity')
+    highest_severity: Severity = element(tag='HighestSeverity')
     notifications: Notifications = element(tag='Notifications')
     transaction_detail: TransactionDetail = element(tag='TransactionDetail', default_factory=TransactionDetail)
     version: Version = element(tag='Version', default_factory=Version)

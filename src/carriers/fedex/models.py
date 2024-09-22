@@ -1,15 +1,11 @@
-from sqlalchemy import Column, Integer, String
-
-from src.main import Base
+from dataclasses import dataclass
 
 
-class FedExCredentialsModel(Base):
-    __tablename__ = 'fedex_credentials'
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_key = Column(String, nullable=False)
-    user_password = Column(String, nullable=False)
-    parent_key = Column(String, nullable=False)
-    parent_password = Column(String, nullable=False)
-    account_number = Column(String, nullable=False)
-    meter_number = Column(String, nullable=False)
+@dataclass
+class FedExCredentialsModel:
+    user_key: str
+    user_password: str
+    parent_key: str
+    parent_password: str
+    account_number: str
+    meter_number: str

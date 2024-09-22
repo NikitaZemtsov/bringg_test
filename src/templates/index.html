@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Package</title>
+    <script>
+        async function submitTrackingForm(event) {
+            event.preventDefault();
+
+            const trackingNumber = document.getElementById("tracking_number").value;
+            const carrier = document.getElementById("carrier").value;
+
+            const response = await fetch("/track", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `carrier_name=${carrier}&tracking_number=${trackingNumber}`,
+            });
+
+            const result = await response.json();
+            document.getElementById("tracking-result").textContent = JSON.stringify(result, null, 2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Track Your Package</h1>
+    <form onsubmit="submitTrackingForm(event)">
+        <label for="carrier">Select Carrier:</label>
+        <select id="carrier" name="carrier" required>
+            {% for carrier in carriers %}
+                <option value="{{ carrier }}">{{ carrier }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label for="tracking_number">Enter Tracking Number:</label>
+        <input type="text" id="tracking_number" name="tracking_number" required>
+
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="tracking-result" style="margin-top: 20px;"></div>
+</body>
+</html>

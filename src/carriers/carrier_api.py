@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class CarriersAPI(ABC):
+class CarrierAPI(ABC):
     @abstractmethod
-    def track(self, track_number: str):
+    def track(self, *args, **kwargs):
         pass
