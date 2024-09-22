@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import requests
-
 from ..carrier_api import CarrierAPI
 from .models import FedExCredentialsModel
 from .schemas import ClientDetail, TrackReply, TrackRequest, WebAuthenticationDetail
@@ -18,11 +16,10 @@ class FedExAPI(CarrierAPI):
         )
 
     @staticmethod
-    def call_fedex_api(xml_request, api_url):
-        headers = {'Content-Type': 'application/xml'}
-        response = requests.post(api_url, data=xml_request, headers=headers)
-
-        if response.status_code == 200:  # noqa: PLR2004
-            data = (Path(__file__).parent / 'fedex_mock.xml').read_text(encoding='UTF-8')
-            return TrackReply.from_xml(data)
-        return {'error': 'Failed to retrieve tracking details'}
+    def call_fedex_api(xml_request, api_url):  # noqa: ARG004
+        # headers = {'Content-Type': 'application/xml'} noqa: ERA001
+        # response = requests.post(api_url, data=xml_request, headers=headers) noqa: ERA001
+        # FedEx test server is not working well. There is only 1 response for every 10 requests.
+        # if response.status_code == 200:
+        data = (Path(__file__).parent / 'fedex_mock.xml').read_text(encoding='UTF-8')
+        return TrackReply.from_xml(data)

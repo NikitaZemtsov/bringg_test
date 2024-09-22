@@ -18,7 +18,7 @@ class FedEx(Carrier):
 
     def track(self, track_number: str):
         reply = self._api.track(track_number=track_number, credentials=self._get_credentional(), api_url=self._api_url)
-        return ResponseBuilder.build_track_response(self.name, track_number, reply)
+        return ResponseBuilder().build_track_response(self.name, track_number, reply)
 
     @staticmethod
     def _get_credentional():

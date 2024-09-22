@@ -20,7 +20,7 @@
             });
 
             const result = await response.json();
-            document.getElementById("tracking-result").textContent = JSON.stringify(result, null, 2);
+document.getElementById("tracking-result").innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
         }
     </script>
 </head>

@@ -84,6 +84,10 @@ class Severity(enum.StrEnum):
     ERROR = 'ERROR'
 
 
+class Code(enum.IntEnum):
+    NOT_FOUND = 9040
+
+
 class Notifications(BaseXmlModel):
     severity: Severity = element(tag='Severity')
     source: str = element(tag='Source')
@@ -107,6 +111,11 @@ class AncillaryDetails(BaseXmlModel, tag='AncillaryDetails'):
 
 class DeliveryCode(enum.StrEnum):
     DELIVERED = 'DL'
+    ON__FED_EX_VEHICLE_FOR_DELIVERY = 'OD'
+    AT_LOCAL_FEDEX_FACILITY = 'AR'
+    ON_THE_WAY = 'IT'
+    DEPARTED_FEDEX_LOCATION = 'DP'
+    PICKED_UP = 'PU'
 
 
 class StatusDetail(BaseXmlModel):
@@ -115,11 +124,6 @@ class StatusDetail(BaseXmlModel):
     description: str | None = element(tag='Description', default=None)
     location: Location = element(tag='Location')
     ancillary_details: AncillaryDetails | None = element(tag='AncillaryDetails', default=None)
-
-
-class PackageIdentifier(BaseXmlModel):
-    type: str = element(tag='Type')
-    value: str = element(tag='Value')
 
 
 class OtherIdentifiers(BaseXmlModel):
@@ -185,7 +189,7 @@ class Address(BaseXmlModel):
 
 class Events(BaseXmlModel):
     timestamp: str = element(tag='Timestamp')
-    event_type: str = element(tag='EventType')
+    event_type: DeliveryCode = element(tag='EventType')
     event_description: str = element(tag='EventDescription')
     address: Address = element(tag='Address')
     arrival_location: str = element(tag='ArrivalLocation')

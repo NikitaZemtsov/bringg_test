@@ -1,12 +1,14 @@
-from src.schemas.track import Checkpoint, Locale, TrackingStage, TrackSuccessfulResponse
+from src.schemas.track import Checkpoint, ErrorCode, Locale, TrackErrorResponse, TrackingStage, TrackSuccessfulResponse
 
-from .schemas import DeliveryCode, Events, Severity, TrackReply
+from .schemas import Code, DeliveryCode, Events, Severity, TrackReply
 
 
 class ResponseBuilder:
-    def build_track_response(self, carrier, tracking_number, track_reply: TrackReply) -> TrackSuccessfulResponse:
-        if TrackReply.completed_track_details.track_details.notification.severity == Severity.SUCCESS:
-            track_details = track_reply.completed_track_details.track_details
+    def build_track_response(
+        self, carrier, tracking_number, track_reply: TrackReply
+    ) -> TrackSuccessfulResponse | TrackErrorResponse | None:
+        track_details = track_reply.completed_track_details.track_details
+        if track_reply.completed_track_details.track_details.notification.severity == Severity.SUCCESS:
             response = TrackSuccessfulResponse(carrier=carrier, tracking_number=tracking_number)
             response.locale = self.__locale(track_reply)
             response.status = track_details.status_detail.description
@@ -14,17 +16,41 @@ class ResponseBuilder:
                 response.delivered = True
                 response.delivery_date = self.__checkpoint(track_details.events[0]).time
             response.checkpoints = [self.__checkpoint(event) for event in track_details.events]
+            response.tracking_stage = self.__tracking_stage(track_details.status_detail.code)
+            return response
+        if TrackReply.completed_track_details.track_details.notification.severity == Severity.ERROR:
+            code = self.__error_code(track_details.notification)
+            message = track_details.notification.localized_message
+            return TrackErrorResponse(code=code, message=message)
+        return None
 
-    def __locale(self, track_reply: TrackReply):
+    @staticmethod
+    def __locale(track_reply: TrackReply):
         code = track_reply.transaction_detail.localization.locale_code.upper()
-        language = track_reply.transaction_detail.localization.language_code.lower()
+        language = track_reply.transaction_detail.localization.language_code.upper()
         return getattr(Locale, f'{language}_{code}')
 
-    def __tracking_stage(self, stage_code):
+    def __error_code(self, notification):
+        if notification.code == Code.NOT_FOUND:
+            return ErrorCode.CARRIER_NO_SHIPMENT_FOUND
+        return ErrorCode.CARRIER_EXCEPTION
+
+    @staticmethod
+    def __tracking_stage(stage_code):
         stage = None
         match stage_code:
             case DeliveryCode.DELIVERED:
                 stage = TrackingStage.DELIVERED
+            case DeliveryCode.ON__FED_EX_VEHICLE_FOR_DELIVERY:
+                stage = TrackingStage.IN_TRANSIT
+            case DeliveryCode.AT_LOCAL_FEDEX_FACILITY:
+                stage = TrackingStage.CHECKED_IN
+            case DeliveryCode.ON_THE_WAY:
+                stage = TrackingStage.OUT_FOR_DELIVERY
+            case DeliveryCode.DEPARTED_FEDEX_LOCATION:
+                stage = TrackingStage.IN_TRANSIT
+            case DeliveryCode.PICKED_UP:
+                stage = TrackingStage.PICKED_UP
         return stage
 
     def __checkpoint(self, event: Events):
