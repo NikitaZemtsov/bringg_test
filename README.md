@@ -13,7 +13,7 @@ or install with:
 ```bash
 pip install pdm
 ```
-Create venv and activate venv:
+Create and activate venv:
 ```bash
 pdm venv create
 source .venv/bin/activate
