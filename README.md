@@ -13,17 +13,15 @@ or install with:
 ```bash
 pip install pdm
 ```
-Create venv:
+Create venv and activate venv:
 ```bash
 pdm venv create
+source .venv/bin/activate
 ```
-
 Install all dependencies with the following command:
-
 ```bash
 pdm sync
 ```
-
 Run app:
 ```bash
 uvicorn --reload src.main:app
