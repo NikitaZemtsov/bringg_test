@@ -13,6 +13,10 @@ or install with:
 ```bash
 pip install pdm
 ```
+Create venv:
+```bash
+pdm venv create
+```
 
 Install all dependencies with the following command:
 
