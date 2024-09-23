@@ -1,0 +1,78 @@
+{
+  "carrier": "FedEx",
+  "checkpoints": [
+    {
+      "description": "Delivered",
+      "status": "Delivered",
+      "tracking_stage": "DELIVERED",
+      "time": "2024-09-09T11:19:36-07:00"
+    },
+    {
+      "description": "On FedEx vehicle for delivery",
+      "status": "On FedEx vehicle for delivery",
+      "tracking_stage": "IN_TRANSIT",
+      "time": "2024-09-09T07:11:00-07:00"
+    },
+    {
+      "description": "At local FedEx facility",
+      "status": "At local FedEx facility",
+      "tracking_stage": "CHECKED_IN",
+      "time": "2024-09-09T06:18:00-07:00"
+    },
+    {
+      "description": "Arrived at FedEx location",
+      "status": "Arrived at FedEx location",
+      "tracking_stage": "CHECKED_IN",
+      "time": "2024-09-07T13:12:00-07:00"
+    },
+    {
+      "description": "On the way",
+      "status": "On the way",
+      "tracking_stage": "OUT_FOR_DELIVERY",
+      "time": "2024-09-07T05:33:54-07:00"
+    },
+    {
+      "description": "On the way",
+      "status": "On the way",
+      "tracking_stage": "OUT_FOR_DELIVERY",
+      "time": "2024-09-06T15:49:26-07:00"
+    },
+    {
+      "description": "Departed FedEx location",
+      "status": "Departed FedEx location",
+      "tracking_stage": "IN_TRANSIT",
+      "time": "2024-09-06T04:45:24-06:00"
+    },
+    {
+      "description": "Arrived at FedEx location",
+      "status": "Arrived at FedEx location",
+      "tracking_stage": "CHECKED_IN",
+      "time": "2024-09-06T00:20:00-06:00"
+    },
+    {
+      "description": "Left FedEx origin facility",
+      "status": "Left FedEx origin facility",
+      "tracking_stage": "IN_TRANSIT",
+      "time": "2024-09-05T20:47:33-06:00"
+    },
+    {
+      "description": "Arrived at FedEx location",
+      "status": "Arrived at FedEx location",
+      "tracking_stage": "CHECKED_IN",
+      "time": "2024-09-05T19:23:00-06:00"
+    },
+    {
+      "description": "Picked up",
+      "status": "Picked up",
+      "tracking_stage": "PICKED_UP",
+      "time": "2024-09-05T16:49:00-06:00"
+    }
+  ],
+  "delivered": true,
+  "delivery_date": "2024-09-09T11:19:36-07:00",
+  "estimated_delivery": null,
+  "locale": "en_US",
+  "status": "Delivered",
+  "tracking_number": "123124234234234",
+  "tracking_stage": "DELIVERED"
+}

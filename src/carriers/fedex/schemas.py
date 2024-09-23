@@ -3,7 +3,7 @@ import re
 
 from pydantic_xml import BaseXmlModel, attr, element
 
-from .models import FedExCredentialsModel
+from .models import FedExCredentials
 
 
 class ParentCredential(BaseXmlModel):
@@ -21,7 +21,7 @@ class WebAuthenticationDetail(BaseXmlModel):
     user_credential: UserCredential = element(tag='UserCredential')
 
     @staticmethod
-    def convert_to_xml_model(credential: FedExCredentialsModel):
+    def convert_to_xml_model(credential: FedExCredentials):
         return WebAuthenticationDetail(
             parent_credential=ParentCredential(key=credential.parent_key, password=credential.parent_password),
             user_credential=UserCredential(key=credential.user_key, password=credential.user_password),
@@ -33,7 +33,7 @@ class ClientDetail(BaseXmlModel):
     meter_number: str = element(tag='MeterNumber')
 
     @staticmethod
-    def convert_to_xml_model(credential: FedExCredentialsModel):
+    def convert_to_xml_model(credential: FedExCredentials):
         return ClientDetail(account_number=credential.account_number, meter_number=credential.meter_number)
 
 

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
 
+# Only for presentation
 @dataclass
-class FedExCredentialsModel:
+class FedExCredentials:
     user_key: str
     user_password: str
     parent_key: str

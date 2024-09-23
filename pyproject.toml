@@ -11,8 +11,8 @@ dependencies = [
     "requests",
     "pydantic-xml",
     "jinja2",
-    "sqlalchemy>=2.0.35",
     "pytest>=8.3.3",
+    "pydantic>=2.9.2",
 ]
 requires-python = "==3.11.*"
 readme = "README.md"

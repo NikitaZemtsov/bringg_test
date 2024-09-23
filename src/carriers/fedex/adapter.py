@@ -8,7 +8,7 @@ class ResponseBuilder:
         self, carrier, tracking_number, track_reply: TrackReply
     ) -> TrackSuccessfulResponse | TrackErrorResponse | None:
         track_details = track_reply.completed_track_details.track_details
-        if track_reply.completed_track_details.track_details.notification.severity == Severity.SUCCESS:
+        if track_details.notification.severity == Severity.SUCCESS:
             response = TrackSuccessfulResponse(carrier=carrier, tracking_number=tracking_number)
             response.locale = self.__locale(track_reply)
             response.status = track_details.status_detail.description
@@ -18,8 +18,8 @@ class ResponseBuilder:
             response.checkpoints = [self.__checkpoint(event) for event in track_details.events]
             response.tracking_stage = self.__tracking_stage(track_details.status_detail.code)
             return response
-        if TrackReply.completed_track_details.track_details.notification.severity == Severity.ERROR:
-            code = self.__error_code(track_details.notification)
+        if track_details.notification.severity == Severity.ERROR:
+            code = self.__error_code(track_details.notification.code)
             message = track_details.notification.localized_message
             return TrackErrorResponse(code=code, message=message)
         return None
@@ -30,8 +30,8 @@ class ResponseBuilder:
         language = track_reply.transaction_detail.localization.language_code.upper()
         return getattr(Locale, f'{language}_{code}')
 
-    def __error_code(self, notification):
-        if notification.code == Code.NOT_FOUND:
+    def __error_code(self, code):
+        if code == Code.NOT_FOUND:
             return ErrorCode.CARRIER_NO_SHIPMENT_FOUND
         return ErrorCode.CARRIER_EXCEPTION
 

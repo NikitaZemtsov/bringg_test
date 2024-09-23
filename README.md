@@ -1,4 +1,4 @@
-# Track
+# Track Your Package
 
 ## How to start
 
@@ -18,4 +18,9 @@ Install all dependencies with the following command:
 
 ```bash
 pdm sync
+```
+
+Run app:
+```bash
+uvicorn --reload src.main:app
 ```

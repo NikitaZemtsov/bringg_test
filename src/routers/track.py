@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from src.carriers.handler import carrier_handler
 
 router = APIRouter()
-from src.main import templates  # noqa: E402
+from ..main import templates  # noqa: E402
 
 
 @router.get('/', response_class=HTMLResponse)
